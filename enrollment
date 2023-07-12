@@ -1,0 +1,401 @@
+ <?php
+ include("admin-header.php");
+
+ ?>
+<?php
+    include '../../connect.php';
+  
+    $query2 = "SELECT enr_id FROM enrollment ORDER BY id DESC LIMIT 1";
+    $result2 = mysqli_query($conn, $query2);
+    $row = mysqli_fetch_array($result2);
+    $last_id = $row['enr_id'];
+  
+    if ($last_id == "") {
+      $customer_ID = "IND-EN001";
+    } else {
+      $customer_ID = substr($last_id, 7);
+      $customer_ID = intval($customer_ID);
+      $customer_ID = "LYZ-AP0" . ($customer_ID + 1);
+    }
+?>
+
+
+<?php
+/* This Makes Connection with DB Server Page */
+include("../../connect.php");
+/* It Query the data from the required DB and Stores In Option keyword */
+
+$query2 = "SELECT id,class_name FROM classes_rc";
+$result2 = $conn->query($query2);
+
+if ($result2->num_rows > 0) {
+  $customer = mysqli_fetch_all($result2, MYSQLI_ASSOC);
+
+}
+?>
+<style>
+  .card-header {
+    background-color: #c55a0c;
+  }
+
+  .card-body {
+    background-color: #f8f9fa;
+  }
+</style>
+
+ <!-- partial -->
+<div class="container-fluid page-body-wrapper">
+  <div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card shadow-sm">
+            <div class="card-header text-white"  style="background-color: #c55a0c;">
+              <h1 class="mb-0">Enrollment</h1>
+            </div>
+            <div class="card-body">
+              <form action="employee_post.php" method="post">
+                <div class="row">
+                     <h4 class="card-title">Enquiry Status</h4>
+
+                  <div class="col-md-6 form-group">
+                    <!-- Existing Student Toggle -->
+                     <div class="row">
+                    <label class="col-8 col-form-label" for="toggle-switch">Existing Student:</label>
+                    <div class="col-4 form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="toggle-switch">
+                    </div>
+                  </div>
+                  </div>
+                  <div class="col-md-6 form-group">
+                    <!-- If you are Enquiry? Radio Buttons -->
+                    <label class="col-8">If you are Enquiry ?</label>
+                  <div class="input-group">
+
+                   <div class="col-4 form-check-inline">
+                    <input class="form-check-input" type="radio" name="radioOptions" id="option1" value="option1" checked>
+                    <label class="form-check-label" for="option1">
+                      Yes
+                    </label>
+                  </div>
+                  <div class="form-check-inline">
+                    <input class="form-check-input" type="radio" name="radioOptions" id="option2" value="option2">
+                    <label class="form-check-label" for="option2">
+                      No
+                    </label>
+                  </div>
+                </div>
+                  </div>
+                </div>
+                <div class="row">
+
+              <div class="col-6">
+                    <div class="card" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                      <div class="card-body">
+
+                      <label for="enrollmentID">Enrollment ID:</label>
+                        <input type="text" id="enrollmentID" name="enrollmentID" value="<?php echo $customer_ID; ?>" readonly>
+              </div>
+            </div>
+          </div>
+                  <div class="col-6">
+                    <div class="card" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                      <div class="card-body">
+                        <!-- Existing Student Select and New Student Input -->
+                         <div class="form-group input-list" id="existing-client">
+                      <label for="existing-client-select">Existing Student:</label>
+                      <select id="existing-client-select" class="form-select">
+                        <option value="client1">Client 1</option>
+                        <option value="client2">Client 2</option>
+                        <option value="client3">Client 3</option>
+                      </select>
+                    </div>
+
+                    <div id="new-client" class="input-list form-group">
+                      <label for="new-client-input">New Student:</label>
+                      <input type="text" id="new-client-input" class="form-control" placeholder="Student Name">
+                </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                 <div class="card border mt-5" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                      <div class="card-body">
+                        <h4 class="card-title">Image Upload</h4>
+                <div class="row align-items-center">
+                  <div class="col-md-6 form-group">
+                    <label>Upload Image</label>
+                    <input type="file" accept="image/*" onchange="loadFile(event)">
+                  </div>
+                  <div class="col-md-6 form-group text-center">
+                    <p><img id="output" width="180" height="170" class="border rounded-circle" src="http://via.placeholder.com/700x500"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+              <div class="card border mt-5" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                      <div class="card-body">
+                        <div class="row">
+                          <h4 class="card-title">Personal Details</h4>
+                          <div class="col-6 form-group">
+                            <!-- Father Name Input -->
+
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text text-white" style="background-color: #631e38;" ><i class="mdi mdi-clock"></i></span>
+                              </div>
+                              <input name="father_name" type="text" class="form-control" placeholder="Father_name" aria-label="father_name">
+                            </div>
+                          </div>
+                          <div class="col-6 form-group">
+                            <!-- Date of Birth Input -->
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-chevron-double-up"></i></span>
+                              </div>
+                              <input name="dob" type="text" class="form-control" placeholder="Date Of Birth" aria-label="dob">
+
+                            </div>
+                          </div>
+                        </div>
+
+                <div class="row">
+                  <div class="col-6 form-group">
+                    <!-- Address Input -->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;" ><i class="mdi mdi-account-key"></i></span>
+                      </div>
+                      <textarea name="address"  class="form-control" placeholder="Address" aria-label="address"></textarea>
+                    </div>
+                  </div>
+                  <div class="col-6 form-group">
+                    <!-- Referencer Input -->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-eye-off"></i></span>
+                      </div>
+                      <input name="referencer" type="text" class="form-control" placeholder="Referencer Name" aria-label="Referencer">
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6 form-group">
+                    <!-- Phone Number Input -->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
+                      </div>
+                      <input name="phoneno" type="text" class="form-control" placeholder="Phone Number" aria-label="phoneno">
+
+                    </div>
+                  </div>
+                  <div class="col-6 form-group">
+                    <!-- Blood Group Input -->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
+                      </div>
+                      <input name="blood" type="text" class="form-control" placeholder="Blood Group" aria-label="blood">
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6 form-group">
+                    <!-- Point Input -->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
+                      </div>
+                      <input name="point" type="text" class="form-control" placeholder="Point" aria-label="point">
+
+                    </div>
+                  </div>
+                  <div class="col-6 form-group">
+                    <!-- Enroll 14 Number Input -->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
+                      </div>
+                      <input name="enroll14" type="text" class="form-control" placeholder="Enroll 14 Number" aria-label="enroll14">
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6 form-group">
+                    <!-- LLR Date Input -->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
+                      </div>
+                      <input name="llr" type="text" class="form-control" placeholder="LLR Date" aria-label="llr">
+
+                    </div>
+                  </div>
+                  <div class="col-6 form-group">
+                    <!-- LLR Validity Date Input -->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
+                      </div>
+                      <input name="validity" type="text" class="form-control" placeholder="LLR Validity Date" aria-label="validity">
+
+                    </div>
+                  </div>
+                </div>
+
+           </div>
+            </div>
+
+            <div class="card mt-5" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+              <div class="card-body">
+
+                <div class="row">
+                  <h4 class="card-title">Course Details</h4>
+
+                  <div class="col-12 form-group">
+                    <!-- Course Select -->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
+                      </div>
+                            <select id="courseList">
+            <option value="">Select a course</option>
+        </select>
+
+                    </div>
+                  </div>
+
+                </div>
+
+
+                <div class="row">
+                  <div class="col-6 form-group">
+                    <!-- LLR Date Input -->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
+                      </div>
+                      <input name="classname" type="text" class="form-control" placeholder="Class Name" aria-label="classname">
+
+                    </div>
+                  </div>
+                  <div class="col-6 form-group">
+                    <!-- LLR Validity Date Input -->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
+                      </div>
+                      <input name="nfd" type="text" class="form-control" placeholder="No Of Days" aria-label="nfd">
+
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <div class="row">
+                  <div class="col-12 form-group">
+                    <!-- LLR Date Input -->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
+                      </div>
+                      <textarea name="classdetails" type="text" class="form-control" placeholder="Class Details" aria-label="classdetails" ></textarea>
+
+                    </div>
+                  </div>
+                  
+                </div>
+
+
+
+
+              </div>
+            </div>
+
+
+              
+
+                <div class="row">
+                  <div class="col-12 text-center mt-5">
+                    <button type="submit" name="staff_details" class="btn btn-success">Save</button>
+                    <a href="employee_list.php" class="btn btn-danger">Cancel</a>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- page-body-wrapper ends -->
+
+
+<script>
+  $(document).ready(function() {
+    // Hide the existing student dropdown
+    $('#existing-client').hide();
+
+    // Show the new student input
+    $('#new-client').show();
+
+    // Initialize the toggle switch
+    $('#toggle-switch').change(function() {
+      var isChecked = $(this).prop('checked');
+      toggleInputList(isChecked);
+    });
+
+    // Function to toggle the visibility of input field list
+    function toggleInputList(isChecked) {
+      if (isChecked) {
+        $('#new-client').hide();
+        $('#existing-client').show();
+      } else {
+        $('#existing-client').hide();
+        $('#new-client').show();
+      }
+    }
+  });
+</script>
+<script>
+  var loadFile = function(event) {
+    var image = document.getElementById('output');
+    image.src=URL.createObjectURL(event.target.files[0]);
+  };
+</script>
+ <script>
+        // Fetch course data using AJAX
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var courses = JSON.parse(xhr.responseText);
+                populateDropdown(courses);
+            }
+        };
+        xhr.open('GET', 'get_package_names.php', true);
+        xhr.send();
+
+        // Populate the dropdown list with course names
+        function populateDropdown(courses) {
+            var select = document.getElementById('courseList');
+            for (var i = 0; i < courses.length; i++) {
+                var option = document.createElement('option');
+                option.value = courses[i];
+                option.textContent = courses[i];
+                select.appendChild(option);
+            }
+        }
+    </script>
