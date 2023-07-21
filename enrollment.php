@@ -395,19 +395,40 @@ if ($result2->num_rows > 0) {
                       <div class="input-group-prepend">
                         <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
                       </div>
-                      <input name="class_time" type="text" id="timeInput" class="flatpickr" data-enable-time="true" data-no-calendar="true" data-date-format="h:i K">
+                          <input id="classdate" name="llr" type="text" class="form-control" placeholder="Class Start Date" aria-label="llr">
                     </div>
                   </div>
 
-                  
+                   <div class="col-6 form-group">
+                    <!-- LLR Date Input -->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
+                      </div>
+                      <input name="ad_date" type="" id="timeInput" class="form-control flatpickr" data-enable-time="true" data-no-calendar="true" data-date-format="h:i K">
+                    </div>
+                  </div>
 
                 </div>
+
+        <div class="row">
+          <div class="col-12 form-group d-flex justify-content-center align-items-center">
+              <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="discountCheckbox" name="discount">
+                  <label class="form-check-label" for="discountCheckbox">Apply Discount</label>
               </div>
-            </div>
+          </div>
+        </div>
+
+
+               
+
+
+            
                 <div class="row">
                   <div class="col-12 text-center mt-5">
                     <button type="submit" name="staff_details" class="btn btn-success">Save</button>
-                    <a href="employee_list.php" class="btn btn-danger">Cancel</a>
+                    <a href="enrollment_list.php" class="btn btn-danger">Cancel</a>
                   </div>
                 </div>
               </form>
@@ -604,6 +625,8 @@ $(document).ready(function() {
   const dobInput = document.getElementById('dob');
   const llrInput = document.getElementById('llr');
   const llrValidInput = document.getElementById('llrValid');
+  const classdate = document.getElementById('classdate');
+
 
   dobInput.addEventListener('focus', function() {
     dobInput.type = 'date';
@@ -635,6 +658,18 @@ $(document).ready(function() {
     if (llrValidInput.value === '') {
       llrValidInput.type = 'text';
       llrValidInput.value = 'LLR Validity Date';
+    }
+  });
+
+
+  classdate.addEventListener('focus', function() {
+    classdate.type = 'date';
+    classdate.setAttribute('min', '1970-01-01'); // Optional: Set a minimum date if needed
+  });
+classdate.addEventListener('blur', function() {
+    if (classdate.value === '') {
+      classdate.type = 'text';
+      classdate.value = 'classdate';
     }
   });
 </script>

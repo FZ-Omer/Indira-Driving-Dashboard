@@ -1,11 +1,25 @@
 <?php
-
 include("../../connect.php");
 
 $sql = "SELECT * FROM enrollment ORDER BY id DESC";
-
 $result = $conn->query($sql);
 
+function getButtonColor($status)
+{
+    switch ($status) {
+        case 'Discount Rejected':
+        case 'Cancelled':
+            return '#F8CECC'; // Mild red color
+        case 'Discount':
+        case 'Payment':
+            return '#C6E0FF'; // Mild blue color
+        case 'Dispatched':
+        case 'Payment Completed':
+            return '#D7F8C2'; // Mild green color
+        default:
+            return '#C2FBD7'; // Default mild color
+    }
+}
 ?>
 
 <?php
@@ -17,9 +31,8 @@ include("admin-header.php");
     <div class="content-wrapper">
       <div class="row" >
 
-        <div class="col-8 mt-5 offset-2" style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px; ">
 
-          <div class="table-responsive">
+          <div class="card-body table-responsive">
           <?php
                    if(isset($_GET['error'])) {
                     $error = $_GET['error'];
@@ -29,75 +42,60 @@ include("admin-header.php");
                       </div>'; 
                      }
                 ?>
-          <table id="myTable" class="table table-striped table-bordered">
-            <a href="enrollment.php"><button class="btn  offset-10 text-white" style="background-color: #9e1017;">+ Add Enrollment</button></a>
-            <thead>
-              <tr>
-              <th>Enquiry</th>
-              <th>Enrollment ID</th>
-              <th>Photo</th>
-              <th>Student Name</th>
-              <th>Father's Name</th>
-              <th>Date of Birth</th>
-              <th>Address</th>
-              <th>Referencer</th>
-              <th>Phone Number</th>
-              <th>Blood Group</th>
-              <th>Point</th>
-              <th>Enroll 14</th>
-              <th>LLR</th>
-              <th>Validity</th>
-              <th>Package</th>
-              <th>Class Name</th>
-              <th>NFD</th>
-              <th>Fees</th>
-              <th>Working</th>
-              <th>Status</th>
-              <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
+         
+       <div class="container-fluid page-body-wrapper">
+  <div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-md-12 mx-auto mt-5">
+          <div class="row">
             <?php
+            if ($result->num_rows > 0) {
+              while ($row = $result->fetch_assoc()) {
+                $class_id = $row['id']; // Get the class ID
+                $enr_id = $row['enr_id'];
+            ?>
+                <div class="col-md-3">
+                  <div class="card card-01">
+                    <div class="profile-box text-center" >
+                      <?php
+                      $imageURL = 'uploads/' . $row["photo"];
+                      if (!empty($row["photo"]) && file_exists($imageURL)) {
+                        echo '<img src="' . $imageURL . '" class="rounded-circle" width="100" height="100" />';
+                      } else {
+                        echo 'Image not available';
+                      }
+                      ?>
+                    </div>
+                    <div class="card-body text-center">
+                      <span class="badge-box"><i class="fa fa-check"></i></span>
+                      <h4 class="card-title"> <?php echo $row['enr_id']; ?></h4>
+                      <h5 class="card-text "><?php echo $row['student_name']; ?></h5>
+                      <p class="card-text"> <?php echo $row['phoneno']; ?></p>
+                    </div>
+                   <div class="card-footer">
+  <a href="#" class="btn btn-success">Profile</a>
+  <a href="#" class="btn btn-primary"><?php echo $row['status']; ?></a>
+</div>
 
-if ($result->num_rows > 0) {
-
-    while ($row = $result->fetch_assoc()) {
-      $class_id = $row['id']; // Get the class ID
-      $enr_id = $row['enr_id']
-
-?>          <tr>
-              <td><?php echo $row['enquiry']; ?></td>
-              <td><?php echo $row['enr_id']; ?></td>
-              <td>
+                  </div>
+                </div>
             <?php
-            $imageURL = 'uploads/' . $row["photo"];
-            if (!empty($row["photo"]) && file_exists($imageURL)) {
-              echo '<img src="' . $imageURL . '" class="img-responsive" width="300" height="300" />';
+              }
             } else {
-              echo 'Image not available';
+              echo "<p>No enrollments found</p>";
             }
             ?>
-          </td>
-            
-              <td><?php echo $row['student_name']; ?></td>
-              <td><?php echo $row['father_name']; ?></td>
-              <td><?php echo $row['dob']; ?></td>
-              <td><?php echo $row['address']; ?></td>
-              <td><?php echo $row['referencer']; ?></td>
-              <td><?php echo $row['phoneno']; ?></td>
-              <td><?php echo $row['blood']; ?></td>
-              <td><?php echo $row['point']; ?></td>
-              <td><?php echo $row['enroll14']; ?></td>
-              <td><?php echo $row['llr']; ?></td>
-              <td><?php echo $row['validity']; ?></td>
-              <td><?php echo $row['package']; ?></td>
-              <td><?php echo $row['classname']; ?></td>
-              <td><?php echo $row['nfd']; ?></td>
-              <td><?php echo $row['fees']; ?></td>
-              <td><?php echo $row['working']; ?></td>
-              <td><?php echo $row['status']; ?></td>
-              <td> <a class="btn btn-info" href="#" data-bs-toggle="modal" data-bs-target="#dlModal<?php echo $class_id; ?>">Status</a></td>
-              </tr>                       
+          </div>
+       
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- page-body-wrapper ends -->
+
             <!-- Modal form -->
             <div class="modal fade" id="dlModal<?php echo $class_id; ?>" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
               <div class="modal-dialog">
@@ -135,16 +133,11 @@ if ($result->num_rows > 0) {
               </div>
             </div>
            
-      <?php
-    }
-  } else {
-    echo "<tr><td colspan='6'>No classes found</td></tr>";
-  }
-  ?>
-                
-            </tbody>
-          </table>
+
         </div>
+        <div class="card-footer text-center">
+        <a href="enrollment.php"><button class="button-34">+ Add Enrollment</button></a>
+            </div>
         </div>
       </div>
     </div>
@@ -170,5 +163,25 @@ function toggleLicenseField(classId) {
   } else {
     licenseField.style.display = 'none';
   }
+}
+</script>
+
+<script>
+function confirmDelete(event) {
+  event.preventDefault(); // Prevent the default behavior of the anchor element
+
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert the Enrollment Data!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#17c1e8',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.location.href = event.target.href; // Proceed with the deletion by redirecting to ad-customer-delete.php
+    }
+  });
 }
 </script>
