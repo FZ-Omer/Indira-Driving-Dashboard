@@ -1,28 +1,28 @@
 <?php
- include("admin-header.php");
+include("admin-header.php");
 
- ?>
+?>
 
 <?php
-    require_once '../../connect.php';
-  
-    $query2 = "SELECT enr_id FROM enrollment ORDER BY id DESC LIMIT 1";
-    $result2 = mysqli_query($conn, $query2);
-  
-    if ($result2 && mysqli_num_rows($result2) > 0) {
-        $row = mysqli_fetch_array($result2);
-        $last_id = $row['enr_id'];
-    } else {
-        $last_id = "";
-    }
-  
-    if ($last_id == "") {
-        $customer_ID = "IND-EN001";
-    } else {
-        $customer_ID = substr($last_id, 7);
-        $customer_ID = intval($customer_ID);
-        $customer_ID = "IND-EN00" . ($customer_ID + 1);
-    }
+require_once '../../connect.php';
+
+$query2 = "SELECT enr_id FROM enrollment ORDER BY id DESC LIMIT 1";
+$result2 = mysqli_query($conn, $query2);
+
+if ($result2 && mysqli_num_rows($result2) > 0) {
+  $row = mysqli_fetch_array($result2);
+  $last_id = $row['enr_id'];
+} else {
+  $last_id = "";
+}
+
+if ($last_id == "") {
+  $customer_ID = "IND-EN001";
+} else {
+  $customer_ID = substr($last_id, 7);
+  $customer_ID = intval($customer_ID);
+  $customer_ID = "IND-EN00" . ($customer_ID + 1);
+}
 ?>
 
 <?php
@@ -157,6 +157,203 @@ if ($result2->num_rows > 0) {
                     </div>
                   </div>
                 </div>
+
+                <div class="card mt-5" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+              <div class="card-body">
+
+              <div class="row">
+                <div class="col-12 form-group">
+
+                  <label for="package">Classes Package</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-contact-mail"></i></span>
+                    </div>
+                    
+                   <select class="form-control" id="package" name="package" aria-placeholder="Select Classes">
+                        <option>Select Classes</option>
+                        <option value="RC">Registration Certificate</option>
+                        <option value="DL">Driving Licence</option>
+                  </select>
+
+            
+                  </div>
+                </div>
+              </div>
+              <div id="class_details">
+              <div class="rc-form" style="display: none;">
+                <h4 class="card-title">Registration Certificate</h4>
+              
+                <div class="row">
+                <div class="col-6 form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-content-paste"></i></span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="Class Name" id="rcClassName" name="class_name" required> 
+                    </div>
+                  </div>
+                  <div class="col-6 form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-content-paste"></i></span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="Working" id="working" name="working" required> 
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6 form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-credit-card-multiple"></i></span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="Fees" id="fees" name="fees" required> 
+                    </div>
+                  </div>
+
+                  <div class="col-6 form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-calendar-check"></i></span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="No Of Days" id="nfd" name="nfd" required> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+             
+            
+             
+
+              
+             
+              
+            
+              <div class="dl-form" style="display: none;">
+                <h4 class="card-title">Driving Licence</h4>
+
+                <div class="row">
+                  <div class="col-6 form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-human-child"></i></span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="class Name" id="dlClassName" name="class_name" required> 
+                    </div>
+                  </div>
+
+                  <div class="col-6 form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-calendar-check"></i></span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="No Of Days" id="nfd" name="nfd" required> 
+                    </div>
+                  </div>
+
+
+                    <div class="col-6 form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-calendar-check"></i></span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="Fees" id="fees" name="fees" required> 
+                    </div>
+                  </div>
+
+
+                </div>
+
+                <h4 class="card-title">Days of Classes</h4>
+                <div class="row">
+                  <div class="col-6 form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-map-marker"></i></span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="Simulation" id="simulation" name="simulation" required> 
+                    </div>
+                  </div>
+
+                  <div class="col-6 form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-map-marker-circle"></i></span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="On Road" id="on_road" name="onroad" required> 
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6 form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-map-marker-minus"></i></span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="Theory" id="theory" name="theory" required> 
+                    </div>
+                  </div>
+                  
+                  <div class="col-6 form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-map-marker-multiple"></i></span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="Reverse" id="reverse" name="reverse" required> 
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6 form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-map-marker-plus"></i></span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="Test Round" id="test_round" name="testround" required> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+
+              
+
+                <div class="row">
+
+                <h4 class="card-title">Select Class Timing</h4>
+                  <div class="col-6 form-group">
+                    <!-- LLR Date Input -->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
+                      </div>
+                          <input id="classdate" name="llr" type="text" class="form-control" placeholder="Class Start Date" aria-label="llr">
+                    </div>
+                  </div>
+
+                   <div class="col-6 form-group">
+                    <!-- LLR Date Input -->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
+                      </div>
+                      <input name="ad_date" type="" id="timeInput" class="form-control flatpickr" data-enable-time="true" data-no-calendar="true" data-date-format="h:i K">
+                    </div>
+                  </div>
+                </div>
+
+        <div class="row">
+          <div class="col-12 form-group d-flex justify-content-center align-items-center">
+              <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="discountCheckbox" name="discount">
+                  <label class="form-check-label" for="discountCheckbox">Apply Discount</label>
+              </div>
+          </div>
+        </div>
 
                  <div class="card border mt-5" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
                       <div class="card-body">
@@ -294,137 +491,8 @@ if ($result2->num_rows > 0) {
            </div>
             </div>
 
-            <div class="card mt-5" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
-              <div class="card-body">
+         
 
-              <div class="row">
-                <div class="col-12 form-group">
-
-                  <label for="package">Classes Package</label>
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-contact-mail"></i></span>
-                    </div>
-                    
-                   <select class="form-control" id="package" name="package" aria-placeholder="Select Classes">
-                        <option>Select Classes</option>
-                        <option value="RC">Registration Certificate</option>
-                        <option value="DL">Driving Licence</option>
-                  </select>
-
-            
-                  </div>
-                </div>
-              </div>
-
-                <div class="row">
-                
-                  <h4 class="card-title">Select Class details</h4>
-
-                  <div class="col-12 form-group">
-                    <!-- Course Select -->
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                      
-                      </div>
-                     
-                      <div id="class_details"></div>  
-     
-       
-
-                    </div>
-                  </div>
-
-                </div>
-
-                    
-                <div class="row">
-                  <div class="col-6 form-group">
-                    <!-- LLR Date Input -->
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
-                      </div>
-                      <input id="className" name="classname" type="text" class="form-control" placeholder="Class Name" aria-label="classname">
-
-                    </div>
-                  </div>
-                  <div class="col-6 form-group">
-                    <!-- LLR Validity Date Input -->
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
-                      </div>
-                      <input name="nfd" type="text" class="form-control" placeholder="No Of Days" aria-label="nfd">
-
-                    </div>
-                  </div>
-                </div>
-
-
-
-                <div class="row">
-                  <div class="col-6 form-group">
-                    <!-- LLR Date Input -->
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
-                      </div>
-                      <input name="fees" type="text" class="form-control" placeholder="Fees" aria-label="classdetails" ></input>
-                    </div>
-                  </div>
-
-                  <div class="col-6 form-group">
-                    <!-- LLR Date Input -->
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
-                      </div>
-                      <input name="working" type="text" class="form-control" placeholder="Working" aria-label="working" ></input>
-                    </div>
-                  </div>
-
-                </div>
-
-                <div class="row">
-
-                <h4 class="card-title">Select Class Timing</h4>
-                  <div class="col-6 form-group">
-                    <!-- LLR Date Input -->
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
-                      </div>
-                          <input id="classdate" name="llr" type="text" class="form-control" placeholder="Class Start Date" aria-label="llr">
-                    </div>
-                  </div>
-
-                   <div class="col-6 form-group">
-                    <!-- LLR Date Input -->
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text text-white" style="background-color: #631e38;"><i class="mdi mdi-account-switch"></i></span>
-                      </div>
-                      <input name="ad_date" type="" id="timeInput" class="form-control flatpickr" data-enable-time="true" data-no-calendar="true" data-date-format="h:i K">
-                    </div>
-                  </div>
-
-                </div>
-
-        <div class="row">
-          <div class="col-12 form-group d-flex justify-content-center align-items-center">
-              <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="discountCheckbox" name="discount">
-                  <label class="form-check-label" for="discountCheckbox">Apply Discount</label>
-              </div>
-          </div>
-        </div>
-
-
-               
-
-
-            
                 <div class="row">
                   <div class="col-12 text-center mt-5">
                     <button type="submit" name="staff_details" class="btn btn-success">Save</button>
@@ -504,6 +572,22 @@ flatpickr("#timeInput", {});
     </script>
 
 <script>
+  const packageSelect = document.getElementById('package');
+  const rcForm = document.querySelector('.rc-form');
+  const dlForm = document.querySelector('.dl-form');
+
+  packageSelect.addEventListener('change', function() {
+    if (this.value === 'RC') {
+      rcForm.style.display = 'block';
+      dlForm.style.display = 'none';
+    } else if (this.value === 'DL') {
+      rcForm.style.display = 'none';
+      dlForm.style.display = 'block';
+    }
+  });
+</script>
+
+<script>
 $(document).ready(function() {
   // When the class selection changes
   $("#package").on("change", function() {
@@ -517,10 +601,10 @@ $(document).ready(function() {
         dataType: 'json',
         success: function(response) {
           $("#class_details").html(response.table);
-          $("#className").replaceWith(response.dropdown);
+          $("#rcClassName").replaceWith(response.dropdown);
 
           // When a class name is selected from the dropdown
-          $("#className").on("change", function() {
+          $("#rcClassName").on("change", function() {
             var selectedClassName = $(this).val();
 
             // Find the selected class details from the response
@@ -539,7 +623,7 @@ $(document).ready(function() {
       });
     } else {
       $("#class_details").html(""); // Clear the details if no class is selected
-      $("#className").replaceWith('<input id="className" name="classname" type="text" class="form-control" placeholder="Class Name" aria-label="classname">');
+      $("#rcClassName").replaceWith('<input id="rcClassName" name="classname" type="text" class="form-control" placeholder="Class Name" aria-label="classname">');
     }
   });
 });
@@ -561,10 +645,10 @@ $(document).ready(function() {
         dataType: 'json',
         success: function(response) {
           $("#class_details").html(response.table);
-          $("#className").replaceWith(response.dropdown);
+          $("#dlClassName").replaceWith(response.dropdown);
 
           // When a class name is selected from the dropdown
-          $("#className").on("change", function() {
+          $("#dlClassName").on("change", function() {
             var selectedClassName = $(this).val();
 
             // Find the selected class details from the response
@@ -576,20 +660,24 @@ $(document).ready(function() {
               // Update the remaining fields with the class details
               $("input[name='fees']").val(selectedClassDetails.fees);
               $("input[name='nfd']").val(selectedClassDetails.nfd);
+              $("input[name='simulation']").val(selectedClassDetails.simulation);
+              $("input[name='onroad']").val(selectedClassDetails.onroad);
+              $("input[name='theory']").val(selectedClassDetails.theory);
+              $("input[name='reverse']").val(selectedClassDetails.reverse);
+              $("input[name='testround']").val(selectedClassDetails.testround);
             }
           });
         }
       });
     } else {
       $("#class_details").html(""); // Clear the details if no class is selected
-      $("#className").replaceWith('<input id="className" name="classname" type="text" class="form-control" placeholder="Class Name" aria-label="classname">');
+      $("#dlClassName").replaceWith('<input id="dlClassName" name="classname" type="text" class="form-control" placeholder="Class Name" aria-label="classname">');
     }
   });
 });
 
 
 </script>
-  
  <script>
   $(document).ready(function() {
     $('#customerDetails').on('change', function() {
