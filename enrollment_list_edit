@@ -1,0 +1,49 @@
+if (status === "dispatched") {
+    detailsDiv.innerHTML = `
+    <form action="enrollment_dispatch_edit.php" method="post">
+      <div class="form-group">
+        <label for="license_number">License Number:</label>
+        <input name="license_no" type="text" class="form-control" id="license_number">
+      </div>
+      <div class="form-group">
+        <label>Transport Status:</label><br>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="transport_type" id="transportYes" value="Transport">
+          <label class="form-check-label" for="transportYes">Transport</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="transport_type" id="transportNo" value="Non Transport">
+          <label class="form-check-label" for="transportNo">Non Transport</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="license_validity_date">License Validity Date:</label>
+        <input name="license_validity" type="date" class="form-control" id="license_validity_date">
+      </div>
+      <input name="id" type="hidden" class="form-control" value="<?php echo $row['id']; ?>">
+    </form>
+    `;
+} else if (status === "work_pending") {
+    detailsDiv.innerHTML = `
+    <form action="enrollment_workingpending_edit.php" method="post">
+      <div class="form-group">
+        <label for="license_validity_date">Pending Date:</label>
+        <input name="wrk_pending_date" type="date" class="form-control" id="work_pending_date">
+      </div>
+      <input name="id" type="hidden" class="form-control" value="<?php echo $row['id']; ?>">
+    </form>
+    `;
+} else if (status === "Postponded") {
+    detailsDiv.innerHTML = `
+    <form action="enrollment_workingpending_edit.php" method="post">
+      <div class="form-group">
+        <label for="license_validity_date">Postponed Date:</label>
+        <input name="postpond_date" type="date" class="form-control" id="postpond_date">
+      </div>
+      <input name="id" type="hidden" class="form-control" value="<?php echo $row['id']; ?>">
+    </form>
+    `;
+} else {
+    // If no status is selected or "Select Status" is chosen, clear the detailsDiv.
+    detailsDiv.innerHTML = "";
+}
